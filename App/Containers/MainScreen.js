@@ -49,9 +49,9 @@ class MainScreen extends React.PureComponent {
   *************************************************************/
   // Render a header?
   renderHeader = () =>
-    <View style={{alignItems: 'center'}}>
+    <View style={styles.titleContainer}>
       <Image source={require('../Images/main_title.png')}
-             style={{width:300}}/>
+             style={styles.titleImage} />
     </View>
     //<Text style={[styles.label, styles.sectionHeader]}> - Header - </Text>
 

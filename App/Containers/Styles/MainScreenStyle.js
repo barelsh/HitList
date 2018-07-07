@@ -6,7 +6,12 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
-    // justifyContent: 'center'
+  },
+  titleContainer: {
+    alignItems: 'center'
+  },
+  titleImage: {
+    width:300
   },
   row: {
     flex: 1,
