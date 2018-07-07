@@ -53,7 +53,6 @@ class MainScreen extends React.PureComponent {
       <Image source={require('../Images/main_title.png')}
              style={styles.titleImage} />
     </View>
-    //<Text style={[styles.label, styles.sectionHeader]}> - Header - </Text>
 
   // Render a footer?
   renderFooter = () =>
@@ -65,7 +64,6 @@ class MainScreen extends React.PureComponent {
 
   renderSeparator = () =>
     <View/>
-    /*<Text style={styles.label}> </Text>*/
 
   // The default function if no Key is provided is index
   // an identifiable key is important if you plan on
@@ -92,17 +90,19 @@ class MainScreen extends React.PureComponent {
   render () {
     return (
       <View style={styles.container}>
+        {this.renderHeader()}
         <FlatList
           contentContainerStyle={styles.listContent}
           data={this.state.dataObjects}
           renderItem={this.renderRow}
           keyExtractor={this.keyExtractor}
           initialNumToRender={this.oneScreensWorth}
-          ListHeaderComponent={this.renderHeader}
-          ListFooterComponent={this.renderFooter}
+          // ListHeaderComponent={this.renderHeader}
+          // ListFooterComponent={this.renderFooter}
           ListEmptyComponent={this.renderEmpty}
           ItemSeparatorComponent={this.renderSeparator}
         />
+        {this.renderFooter()}
       </View>
     )
   }
