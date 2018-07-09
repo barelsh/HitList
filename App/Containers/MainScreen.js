@@ -1,38 +1,18 @@
 import React from 'react'
+import {Button} from 'react-native-elements'
 import {View, Text, FlatList, Image} from 'react-native'
 import { connect } from 'react-redux'
 
-// More info here: https://facebook.github.io/react-native/docs/flatlist.html
+import FetchListsActions from '../Redux/FetchListsRedux'
 
 // Styles
 import styles from './Styles/MainScreenStyle'
 
 class MainScreen extends React.PureComponent {
-  /* ***********************************************************
-  * STEP 1
-  * This is an array of objects with the properties you desire
-  * Usually this should come from Redux mapStateToProps
-  *************************************************************/
   state = {
-    dataObjects: [
-      {title: 'First List', description: 'First Description'},
-      {title: 'Second List', description: 'Second Description'},
-      {title: 'Third List', description: 'Third Description'},
-      {title: 'Fourth List', description: 'Fourth Description'},
-      {title: 'Fifth List', description: 'Fifth Description'},
-      {title: 'Sixth List', description: 'Sixth Description'},
-      {title: 'Seventh List', description: 'Seventh Description'}
-    ]
+    lists: {...FetchListsActions.INITIAL_STATE}
   }
 
-  /* ***********************************************************
-  * STEP 2
-  * `renderRow` function. How each cell/row should be rendered
-  * It's our best practice to place a single component here:
-  *
-  * e.g.
-    return <MyCustomCell title={item.title} description={item.description} />
-  *************************************************************/
   renderRow ({item}) {
     return (
       <View style={styles.row}>
@@ -42,11 +22,6 @@ class MainScreen extends React.PureComponent {
     )
   }
 
-  /* ***********************************************************
-  * STEP 3
-  * Consider the configurations we've set below.  Customize them
-  * to your liking!  Each with some friendly advice.
-  *************************************************************/
   // Render a header?
   renderHeader = () =>
     <View style={styles.titleContainer}>
@@ -87,13 +62,24 @@ class MainScreen extends React.PureComponent {
   //   {length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index}
   // )}
 
+  fetchLists() {
+    this.props.fetchLists({user: 7})
+  }
+
   render () {
-    return (
+    console.log(JSON.stringify(this.props.lists))
+    const isFetching = this.props.lists ? this.props.lists.fetching : false;
+    const data = this.props.lists ? this.props.lists.payload ? this.props.lists.payload : [] : [];
+      return (
       <View style={styles.container}>
         {this.renderHeader()}
-        <FlatList
+        <Button title={'fetch lists'} onPress={this.fetchLists.bind(this)}/>
+        {isFetching ?
+          <Text> Fetching Lists... </Text>
+          :
+          <FlatList
           contentContainerStyle={styles.listContent}
-          data={this.state.dataObjects}
+          data={data}
           renderItem={this.renderRow}
           keyExtractor={this.keyExtractor}
           initialNumToRender={this.oneScreensWorth}
@@ -101,7 +87,8 @@ class MainScreen extends React.PureComponent {
           // ListFooterComponent={this.renderFooter}
           ListEmptyComponent={this.renderEmpty}
           ItemSeparatorComponent={this.renderSeparator}
-        />
+          />
+        }
         {this.renderFooter()}
       </View>
     )
@@ -109,13 +96,15 @@ class MainScreen extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => {
-  return {
-    // ...redux state to props here
-  }
+  console.log('in mapStateToProps '+ JSON.stringify(state))
+  console.log(this.props)
+  return {lists: {...state.fetchLists}}
 }
 
 const mapDispatchToProps = (dispatch) => {
+  console.log('in mapDispatchToProps')
   return {
+    fetchLists: (data) => dispatch(FetchListsActions.fetchListsRequest(data))
   }
 }
 
