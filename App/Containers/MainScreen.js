@@ -63,31 +63,38 @@ class MainScreen extends React.PureComponent {
   // )}
 
   fetchLists() {
-    this.props.fetchLists({user: 7})
+    this.props.fetchLists({
+      user: {
+        id: 7
+      }})
   }
 
   render () {
-    console.log(JSON.stringify(this.props.lists))
+    console.log('rendering... ' + JSON.stringify(this.props.lists))
     const isFetching = this.props.lists ? this.props.lists.fetching : false;
+    const isErrorFetching = this.props.lists ? this.props.lists.error : false;
     const data = this.props.lists ? this.props.lists.payload ? this.props.lists.payload : [] : [];
       return (
       <View style={styles.container}>
         {this.renderHeader()}
         <Button title={'fetch lists'} onPress={this.fetchLists.bind(this)}/>
-        {isFetching ?
-          <Text> Fetching Lists... </Text>
+        {isErrorFetching ?
+          <Text> Error when trying to Fetch Lists :( </Text>
           :
-          <FlatList
-          contentContainerStyle={styles.listContent}
-          data={data}
-          renderItem={this.renderRow}
-          keyExtractor={this.keyExtractor}
-          initialNumToRender={this.oneScreensWorth}
-          // ListHeaderComponent={this.renderHeader}
-          // ListFooterComponent={this.renderFooter}
-          ListEmptyComponent={this.renderEmpty}
-          ItemSeparatorComponent={this.renderSeparator}
-          />
+          isFetching ?
+            <Text> Fetching Lists... </Text>
+            :
+            <FlatList
+            contentContainerStyle={styles.listContent}
+            data={data}
+            renderItem={this.renderRow}
+            keyExtractor={this.keyExtractor}
+            initialNumToRender={this.oneScreensWorth}
+            // ListHeaderComponent={this.renderHeader}
+            // ListFooterComponent={this.renderFooter}
+            ListEmptyComponent={this.renderEmpty}
+            ItemSeparatorComponent={this.renderSeparator}
+            />
         }
         {this.renderFooter()}
       </View>

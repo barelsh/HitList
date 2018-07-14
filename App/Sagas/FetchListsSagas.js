@@ -14,25 +14,15 @@ import { call, put, select } from 'redux-saga/effects'
 import FetchListsActions from '../Redux/FetchListsRedux'
 import { FetchListsSelectors } from '../Redux/FetchListsRedux'
 
-export function * getFetchLists (action) {
+export function * getFetchLists (api, action) {
+  console.log(`in saga! got an action! ` + JSON.stringify(action, Object.getOwnPropertyNames(action)))
   const { data } = action
-  // get current data from Store
-  const currentData = yield select(FetchListsSelectors.getData)
-  // make the call to the api
-  //const response = yield call(api.getfetchLists, data)
+  // const currentData = select(FetchListsSelectors.getData)
 
-  const response = {
-    ok: true,
-    data:
-      [
-        {title: 'First List', description: 'First Description'},
-        {title: 'Second List', description: 'Second Description'},
-        {title: 'Third List', description: 'Third Description'},
-        {title: 'Fourth List', description: 'Fourth Description'},
-      ]
-  }
+  //yield call(api.setExampleLists, data.user.id)
+  const response = yield call(api.fetchLists, data.user.id)
 
-
+  console.log(`in saga! responded! ` +JSON.stringify(response))
   // success?
   if (response.ok) {
     // You might need to change the response here - do this with a 'transform',
