@@ -28,7 +28,9 @@ _storeData = async (key, value) => {
 }
 
 export async function fetchLists(userId){
+  console.log('fetching...')
   const data = await _retrieveData(`${userId}:Lists`);
+  console.log('fetched! ' + JSON.stringify(data))
   return data;
 }
 

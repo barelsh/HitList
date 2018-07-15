@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, StatusBar } from 'react-native'
 import ReduxNavigation from '../Navigation/ReduxNavigation'
 import { connect } from 'react-redux'
-import StartupActions from '../Redux/StartupRedux'
+// import StartupActions from '../Redux/StartupRedux'
 
 // Styles
 import styles from './Styles/RootContainerStyles'

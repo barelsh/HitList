@@ -6,7 +6,7 @@ import Immutable from 'seamless-immutable'
 const { Types, Creators } = createActions({
   fetchListsRequest: ['data'],
   fetchListsSuccess: ['payload'],
-  fetchListsFailure: null
+  fetchListsFailure: ['error']
 })
 
 export const FetchListsTypes = Types
@@ -42,8 +42,8 @@ export const success = (state, action) => {
 }
 
 // Something went wrong somewhere.
-export const failure = state =>
-  state.merge({ fetching: false, error: true, payload: null })
+export const failure = (state, error) =>
+  state.merge({ fetching: false, error: error, payload: null })
 
 /* ------------- Hookup Reducers To Types ------------- */
 

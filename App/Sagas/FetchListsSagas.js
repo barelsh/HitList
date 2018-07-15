@@ -29,6 +29,6 @@ export function * getFetchLists (api, action) {
     // located in ../Transforms/. Otherwise, just pass the data back from the api.
     yield put(FetchListsActions.fetchListsSuccess(response.data))
   } else {
-    yield put(FetchListsActions.fetchListsFailure())
+    yield put(FetchListsActions.fetchListsFailure(response))
   }
 }
