@@ -3,11 +3,18 @@ import { AsyncStorage } from 'react-native'
 
 _retrieveData = async (key) => {
   try {
+    console.log('getting '+ '@HitList:'+key)
     const value = await AsyncStorage.getItem('@HitList:'+key);
     if (value !== null) {
       return {
         ok: true,
         data: JSON.parse(value)
+      }
+    }
+    else {
+      return {
+        ok: true,
+        data: []
       }
     }
   } catch (error) {

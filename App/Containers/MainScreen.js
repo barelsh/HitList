@@ -13,12 +13,23 @@ class MainScreen extends React.PureComponent {
     lists: {...FetchListsActions.INITIAL_STATE}
   }
 
-  renderRow ({item}) {
+  navToSelectedList(id) {
+    //TODO fetch list transactions
+    const {navigate} = this.props.navigation;
+    navigate('ListScreen', { id })
+  }
+
+  renderRow ({item}, self) {
+  //  <View style={styles.row}>
+  //    <Text style={styles.boldLabel}>{item.title}</Text>
+  //    <Text style={styles.label}>{item.description}</Text>
+  //  </View>
+
+    const press = ()=> {
+      self.navToSelectedList(item.id)
+    };
     return (
-      <View style={styles.row}>
-        <Text style={styles.boldLabel}>{item.title}</Text>
-        <Text style={styles.label}>{item.description}</Text>
-      </View>
+      <Button style={styles.boldLabel} title={item.title} onPress={press} />
     )
   }
 
@@ -87,7 +98,7 @@ class MainScreen extends React.PureComponent {
             <FlatList
             contentContainerStyle={styles.listContent}
             data={data}
-            renderItem={this.renderRow}
+            renderItem={(item)=>this.renderRow(item, this)}
             keyExtractor={this.keyExtractor}
             initialNumToRender={this.oneScreensWorth}
             // ListHeaderComponent={this.renderHeader}
@@ -104,7 +115,6 @@ class MainScreen extends React.PureComponent {
 
 const mapStateToProps = (state) => {
   console.log('in mapStateToProps '+ JSON.stringify(state))
-  console.log(this.props)
   return {lists: {...state.fetchLists}}
 }
 
