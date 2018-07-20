@@ -9,12 +9,14 @@ import LocalStorageApi from '../Services/LocalStorageApi'
 import { StartupTypes } from '../Redux/StartupRedux'
 import { GithubTypes } from '../Redux/GithubRedux'
 import { FetchListsTypes } from '../Redux/FetchListsRedux'
+import { SelectListTypes } from '../Redux/SelectListRedux'
 
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
 import { getUserAvatar } from './GithubSagas'
 import { getFetchLists } from './FetchListsSagas'
+import { getSelectedList } from './SelectListSagas'
 
 /* ------------- API ------------- */
 
@@ -35,5 +37,6 @@ export default function * root () {
     takeLatest(GithubTypes.USER_REQUEST, getUserAvatar, api),
 
     takeLatest(FetchListsTypes.FETCH_LISTS_REQUEST, getFetchLists, api),
+    takeLatest(SelectListTypes.SELECT_LIST_REQUEST, getSelectedList, api),
   ])
 }
