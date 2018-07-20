@@ -4,6 +4,7 @@ import {View, Text, FlatList, Image} from 'react-native'
 import { connect } from 'react-redux'
 
 import FetchListsActions from '../Redux/FetchListsRedux'
+import SelectListActions from '../Redux/SelectListRedux'
 
 // Styles
 import styles from './Styles/MainScreenStyle'
@@ -14,7 +15,7 @@ class MainScreen extends React.PureComponent {
   }
 
   navToSelectedList(id) {
-    //TODO fetch list transactions
+    this.props.selectList({id})
     const {navigate} = this.props.navigation;
     navigate('ListScreen', { id })
   }
@@ -121,7 +122,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   console.log('in mapDispatchToProps')
   return {
-    fetchLists: (data) => dispatch(FetchListsActions.fetchListsRequest(data))
+    fetchLists: (data) => dispatch(FetchListsActions.fetchListsRequest(data)),
+    selectList: (data) => dispatch(SelectListActions.selectListRequest(data)),
   }
 }
 
