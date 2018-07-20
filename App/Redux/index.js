@@ -8,6 +8,7 @@ export const reducers = combineReducers({
   // github: require('./GithubRedux').reducer,
   // search: require('./SearchRedux').reducer,
   fetchLists: require('./FetchListsRedux').reducer,
+  selectList: require('./SelectListRedux').reducer
 })
 
 export default () => {
