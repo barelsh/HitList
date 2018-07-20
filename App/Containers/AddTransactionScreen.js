@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {ScrollView, Text, KeyboardAvoidingView, View, Picker, TextInput,} from 'react-native'
-import {CheckBox} from 'react-native-elements'
+import {CheckBox, Button} from 'react-native-elements'
 import { connect } from 'react-redux'
 
 // Add Actions - replace 'Your' with whatever your reducer is called :)
@@ -12,13 +12,33 @@ import styles from './Styles/AddTransactionScreenStyle'
 class AddTransactionScreen extends Component {
 
   state = {
-    names: [
-      {name: 'First Name'},
-      {name: 'Second Name'},
-      {name: 'Third Name'},
-      {name: 'Forth Name'},
-    ]
-  };
+    whoPayed: null,
+    forWhom: []
+  }
+
+  whoPayedChanged(itemValue){
+    this.setState({
+      whoPayed: itemValue
+    })
+  }
+
+  forWhomPressed(item) {
+    if (!this.state.forWhom.includes(item)) {
+      this.setState({
+        forWhom: this.state.forWhom.concat(item)
+      })
+    }
+    else {
+      this.setState({
+        forWhom: this.state.forWhom.filter(memberId=>memberId != item)
+      })
+    }
+  }
+
+  onSubmitPress() {
+
+  }
+
 
   render () {
     return (
@@ -27,10 +47,11 @@ class AddTransactionScreen extends Component {
           <Text>AddTransactionScreen</Text>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text>Who payed: </Text>
-            <Picker style={{width:250, height:30}} mode={'dropdown'}>
+            <Picker style={{width:250, height:30}} mode={'dropdown'} onValueChange={this.whoPayedChanged.bind(this)}
+                    selectedValue={this.state.whoPayed}>
               {
-                this.state.names.map((item, index) =>
-                  <Picker.Item label={item.name} key={index}/>
+                this.props.members.map((item, index) =>
+                  <Picker.Item label={item.name} key={index} value={item}/>
                 )
               }
             </Picker>
@@ -40,8 +61,10 @@ class AddTransactionScreen extends Component {
             <Text>For whom: </Text>
             <View style={{width:250, flexDirection: 'column'}}>
               {
-                this.state.names.map((item, index) =>
-                  <CheckBox title={item.name} key={index} />
+                this.props.members.map((item, index) =>
+                  <CheckBox title={item.name} key={index} value={item}
+                            checked={this.state.forWhom.includes(item.id)}
+                            onPress={this.forWhomPressed.bind(this,item.id)}/>
                 )
               }
             </View>
@@ -56,6 +79,7 @@ class AddTransactionScreen extends Component {
             <Text>What for: </Text>
             <TextInput style={{width:150}} />
           </View>
+          {/*<Button title={'submit'} onPress={this.onSubmitPress.bind(this)}/>*/}
         </KeyboardAvoidingView>
       </ScrollView>
     )
@@ -64,6 +88,8 @@ class AddTransactionScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    list: {...state.selectList},
+    members: state.selectList.payload ? JSON.parse(JSON.stringify(state.selectList.payload.members)) : [],
   }
 }
 

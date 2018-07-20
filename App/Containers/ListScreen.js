@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {ScrollView, Text, KeyboardAvoidingView, View, FlatList} from 'react-native'
+import {Button} from 'react-native-elements'
 import { connect } from 'react-redux'
 
 const utils = require('../Lib/utils')
@@ -30,6 +31,11 @@ class ListScreen extends Component {
     <View/>;
 
   keyExtractor = (item, index) => index;
+
+  navToAddTransaction() {
+    const {navigate} = this.props.navigation;
+    navigate('AddTransactionScreen')
+  }
 
   render () {
     console.log('in ListScreen.render. this.props: ' + JSON.stringify(this.props));
@@ -62,6 +68,7 @@ class ListScreen extends Component {
               ItemSeparatorComponent={this.renderSeparator}
             />
         }
+        <Button title={'add transaction'} onPress={this.navToAddTransaction.bind(this)}/>
       </ScrollView>
     )
   }
