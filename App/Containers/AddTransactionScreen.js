@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {ScrollView, Text, KeyboardAvoidingView, View, TextInput,} from 'react-native'
+import {ScrollView, Text, KeyboardAvoidingView, View, TextInput, Picker,} from 'react-native'
 import {CheckBox, Button} from 'react-native-elements'
 import { connect } from 'react-redux'
 
@@ -8,39 +8,86 @@ import { connect } from 'react-redux'
 
 // Styles
 import styles from './Styles/AddTransactionScreenStyle'
-import TransactionWhoPayed from "../Components/TransactionWhoPayed";
 
 class AddTransactionScreen extends Component {
+  constructor(){
+    super()
+    console.log('AddTransactionScreen constructor this.props')
 
-  state = {
-    forWhom: []
+    this.state = {
+      whoPayed: null, //this.props.members[0],
+      forWhom: [],
+      amount: 0,
+      description: ''
+    }
   }
 
-  forWhomPressed(item) {
-    if (!this.state.forWhom.includes(item)) {
+  onPressForWhom(memberId) {
+    if (!this.state.forWhom.includes(memberId)) {
       this.setState({
-        forWhom: this.state.forWhom.concat(item)
+        forWhom: this.state.forWhom.concat(memberId)
       })
     }
     else {
       this.setState({
-        forWhom: this.state.forWhom.filter(memberId=>memberId != item)
+        forWhom: this.state.forWhom.filter(mId=>mId != memberId)
       })
     }
   }
 
-  onSubmitPress() {
-
+  onChangedWhoPayed(member){
+    this.setState({
+      whoPayed: member
+    })
   }
 
+  onChangedHowMach(text) {
+    this.setState({
+      amount: parseFloat(text)
+    })
+  }
+
+  onChangedDescription(text) {
+    this.setState({
+      description: text
+    })
+  }
+
+  onSubmitPress() {
+    console.log('SUBMIT TRANSACTION! ' + JSON.stringify(this.state))
+  }
+
+  initStateFromProps() {
+    this.setState({
+      whoPayed: this.props.members[0],
+      forWhom: this.props.members.map(m=>{return m.id})
+    })
+  }
 
   render () {
+    console.log('in AddTransactionScreen render. state ' + JSON.stringify(this.state))
+    console.log('in AddTransactionScreen render. props ' + JSON.stringify(this.props))
+    if (this.state.whoPayed == null) {
+      this.initStateFromProps();
+      return null;
+    }
+
     return (
       <ScrollView style={styles.container}>
         <KeyboardAvoidingView behavior='position'>
           <Text>AddTransactionScreen</Text>
 
-          <TransactionWhoPayed members={this.props.members} defaultPayer={this.props.members[0]}/>
+          <View style={styles.container}>
+            <Text>Who payed: </Text>
+            <Picker style={{width:250, height:30}} mode={'dropdown'} onValueChange={this.onChangedWhoPayed.bind(this)}
+                    selectedValue={this.state.whoPayed}>
+              {
+                this.props.members.map((item, index) =>
+                  <Picker.Item label={item.name} key={index} value={item}/>
+                )
+              }
+            </Picker>
+          </View>
 
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text>For whom: </Text>
@@ -49,7 +96,7 @@ class AddTransactionScreen extends Component {
                 this.props.members.map((item, index) =>
                   <CheckBox title={item.name} key={index} value={item}
                             checked={this.state.forWhom.includes(item.id)}
-                            onPress={this.forWhomPressed.bind(this,item.id)}/>
+                            onPress={this.onPressForWhom.bind(this,item.id)}/>
                 )
               }
             </View>
@@ -57,14 +104,14 @@ class AddTransactionScreen extends Component {
 
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text>How much: </Text>
-            <TextInput style={{width:40}} keyboardType={'numeric'}/>
+            <TextInput style={{width:40}} keyboardType={'numeric'} onChangeText={this.onChangedHowMach.bind(this)}/>
           </View>
 
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text>What for: </Text>
-            <TextInput style={{width:150}} />
+            <TextInput style={{width:150}} onChangeText={this.onChangedDescription.bind(this)} />
           </View>
-          {/*<Button title={'submit'} onPress={this.onSubmitPress.bind(this)}/>*/}
+          <Button title={'submit'} onPress={this.onSubmitPress.bind(this)}/>
         </KeyboardAvoidingView>
       </ScrollView>
     )
