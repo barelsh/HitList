@@ -4,7 +4,7 @@ import {CheckBox, Button} from 'react-native-elements'
 import { connect } from 'react-redux'
 
 // Add Actions - replace 'Your' with whatever your reducer is called :)
-// import YourActions from '../Redux/YourRedux'
+import AddTransactionActions from '../Redux/AddTransactionRedux'
 
 // Styles
 import styles from './Styles/AddTransactionScreenStyle'
@@ -55,6 +55,14 @@ class AddTransactionScreen extends Component {
 
   onSubmitPress() {
     console.log('SUBMIT TRANSACTION! ' + JSON.stringify(this.state))
+    console.log('this.props.list.data.id ' + this.props.list.data.id)
+    this.props.addTransaction({
+      whoPayed: this.state.whoPayed.id,
+      forWhom: this.state.forWhom.map(mId=>mId),
+      amount: this.state.amount,
+      description: this.state.description,
+      },
+      this.props.list.data.id);
   }
 
   initStateFromProps() {
@@ -127,6 +135,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    addTransaction: (transaction, listId) => dispatch(AddTransactionActions.addTransactionRequest({transaction, listId}))
   }
 }
 
