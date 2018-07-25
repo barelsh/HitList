@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {ScrollView, Text, KeyboardAvoidingView, View, Picker, TextInput,} from 'react-native'
+import {ScrollView, Text, KeyboardAvoidingView, View, TextInput,} from 'react-native'
 import {CheckBox, Button} from 'react-native-elements'
 import { connect } from 'react-redux'
 
@@ -8,18 +8,12 @@ import { connect } from 'react-redux'
 
 // Styles
 import styles from './Styles/AddTransactionScreenStyle'
+import TransactionWhoPayed from "../Components/TransactionWhoPayed";
 
 class AddTransactionScreen extends Component {
 
   state = {
-    whoPayed: null,
     forWhom: []
-  }
-
-  whoPayedChanged(itemValue){
-    this.setState({
-      whoPayed: itemValue
-    })
   }
 
   forWhomPressed(item) {
@@ -45,17 +39,8 @@ class AddTransactionScreen extends Component {
       <ScrollView style={styles.container}>
         <KeyboardAvoidingView behavior='position'>
           <Text>AddTransactionScreen</Text>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text>Who payed: </Text>
-            <Picker style={{width:250, height:30}} mode={'dropdown'} onValueChange={this.whoPayedChanged.bind(this)}
-                    selectedValue={this.state.whoPayed}>
-              {
-                this.props.members.map((item, index) =>
-                  <Picker.Item label={item.name} key={index} value={item}/>
-                )
-              }
-            </Picker>
-          </View>
+
+          <TransactionWhoPayed members={this.props.members} defaultPayer={this.props.members[0]}/>
 
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text>For whom: </Text>
