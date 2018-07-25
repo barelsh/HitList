@@ -28,9 +28,16 @@ _retrieveData = async (key) => {
 _storeData = async (key, value) => {
   try {
     await AsyncStorage.setItem('@HitList:'+key, JSON.stringify(value));
+    return {
+      ok: true
+    }
   } catch (error) {
     // Error saving data
     console.log('storeData. ERROR! ' + error.message)
+    return {
+      ok: false,
+      error: error
+    }
   }
 }
 
@@ -97,9 +104,35 @@ export async function fetchListTransactions(listId) {
   return data;
 }
 
+export async function postTransaction(transactionId, listId, {time, whoPayed,forWhom,amount,description}) {
+  console.log('storing...')
+  let transactions = await _retrieveData(`Lists:${listId}:Transactions`)
+  if (!transactions.ok) {
+    return {
+      ok: false,
+      error: transactions.error
+    }
+  }
+  transactions.data.push(transactionId)
+  await _storeData(`Lists:${listId}:Transactions`, transactions.data);
+  const data = await _storeData(`Lists:${listId}:Transactions:${transactionId}`,
+    {
+      id: transactionId,
+      time,
+      whoPayed,
+      forWhom,
+      amount,
+      description
+    });
+  console.log('stored! ' + JSON.stringify(data))
+  return data;
+}
+
 export default {
   fetchLists,
   setExampleLists,
   getListBalances,
-  getListMembers
+  getListMembers,
+  fetchListTransactions,
+  postTransaction,
 }
