@@ -54,15 +54,16 @@ class AddTransactionScreen extends Component {
   }
 
   onSubmitPress() {
-    console.log('SUBMIT TRANSACTION! ' + JSON.stringify(this.state))
-    console.log('this.props.list.data.id ' + this.props.list.data.id)
     this.props.addTransaction({
-      whoPayed: this.state.whoPayed.id,
-      forWhom: this.state.forWhom.map(mId=>mId),
-      amount: this.state.amount,
-      description: this.state.description,
+        whoPayed: this.state.whoPayed.id,
+        forWhom: this.state.forWhom.map(mId => mId),
+        amount: this.state.amount,
+        description: this.state.description,
       },
       this.props.list.data.id);
+
+    //TODO make this happen after transaction is set
+    this.props.navigation.goBack();
   }
 
   initStateFromProps() {
