@@ -19,6 +19,36 @@ module.exports = {
 
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
            s4() + '-' + s4() + s4() + s4();
+  },
+
+  /**
+   *
+   * @param balances [{id_number, name_string, balance_number}...]
+   * @param transaction {whoPayed_number,forWhom_number,amount_number}
+   * @returns {Array} [{id_number, name_string, balance_number}...]
+   */
+  updateBalances: (balances, transaction) => {
+    const payedCount = transaction.forWhom.length
+    const isPayerIncluded = transaction.forWhom.includes(transaction.whoPayed)
+    return balances.map(member =>
+      member.memberId == transaction.whoPayed ?
+        (isPayerIncluded ?
+          {...member,
+            balance: Math.round((member.balance - (transaction.amount * (1 - (1/payedCount)))) * 100) / 100
+          }
+        :
+          {...member,
+            balance: Math.round((member.balance - transaction.amount) * 100) / 100
+          }
+        )
+      :
+      transaction.forWhom.includes(member.memberId) ?
+        {...member,
+          balance: Math.round((member.balance + (transaction.amount / payedCount)) * 100) / 100
+        }
+        :
+        {...member}
+    )
   }
 
 }
