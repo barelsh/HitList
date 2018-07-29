@@ -128,6 +128,12 @@ export async function postTransaction(transactionId, listId, {time, whoPayed,for
   return data;
 }
 
+export async function postBalances(listId, balances) {
+  const data = await _storeData(`Lists:${listId}:Balances`, balances);
+  console.log('stored! ' + JSON.stringify(data));
+  return data;
+}
+
 export default {
   fetchLists,
   setExampleLists,
@@ -135,4 +141,5 @@ export default {
   getListMembers,
   fetchListTransactions,
   postTransaction,
+  postBalances,
 }
