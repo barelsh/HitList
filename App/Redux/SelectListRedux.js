@@ -24,7 +24,8 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const SelectListSelectors = {
-  getData: state => state.data
+  getBalances: state => state.selectList.payload.balances,
+  getListId: state => state.selectList.data.id,
 }
 
 /* ------------- Reducers ------------- */
