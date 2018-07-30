@@ -97,7 +97,7 @@ export async function getListBalances(listId){
 }
 
 //TODO test
-export async function fetchListTransactions(listId) {
+export async function getListTransactions(listId) {
   console.log('fetching...')
   const data = await _retrieveData(`Lists:${listId}:Transactions`);
   console.log('fetched! ' + JSON.stringify(data))
@@ -161,7 +161,7 @@ export default {
   setExampleLists,
   getListBalances,
   getListMembers,
-  fetchListTransactions,
+  getListTransactions,
   postTransaction,
   postBalances,
   postAddList
