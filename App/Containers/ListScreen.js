@@ -3,6 +3,8 @@ import {ScrollView, Text, KeyboardAvoidingView, View, FlatList} from 'react-nati
 import {Button} from 'react-native-elements'
 import { connect } from 'react-redux'
 
+import FetchTransactionsActions from '../Redux/FetchTransactionsRedux'
+
 const utils = require('../Lib/utils')
 
 // Styles
@@ -37,6 +39,13 @@ class ListScreen extends Component {
     navigate('AddTransactionScreen')
   }
 
+  navToTransactions() {
+    this.props.fetchTransactions(this.props.list.data.id)
+
+    const {navigate} = this.props.navigation;
+    navigate('TransactionsScreen')
+  }
+
   render () {
     console.log('in ListScreen.render. this.props: ' + JSON.stringify(this.props));
     const listId = this.props.list.data.id;
@@ -69,6 +78,8 @@ class ListScreen extends Component {
             />
         }
         <Button title={'add transaction'} onPress={this.navToAddTransaction.bind(this)}/>
+        <View/>
+        <Button title={'view transactions'} onPress={this.navToTransactions.bind(this)}/>
       </ScrollView>
     )
   }
@@ -91,8 +102,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  console.log('in ListScreen.mapDispatchToProps. dispatch: ' + JSON.stringify(dispatch));
   return {
+    fetchTransactions: (listId) => dispatch(FetchTransactionsActions.fetchTransactionsRequest({listId: listId}))
   }
 };
 
