@@ -81,6 +81,15 @@ class MainScreen extends React.PureComponent {
       }})
   }
 
+  navToAddListScreen() {
+    const {navigate} = this.props.navigation;
+    navigate('AddListScreen', {
+      user: {
+        id: this.state.user.id
+      }
+    })
+  }
+
   render () {
     console.log('rendering... ' + JSON.stringify(this.props.lists))
     const isFetching = this.props.lists ? this.props.lists.fetching : false;
@@ -109,6 +118,7 @@ class MainScreen extends React.PureComponent {
             />
         }
         {this.renderFooter()}
+        <Button title={'Add a new list'} onPress={this.navToAddListScreen.bind(this)}/>
       </View>
     )
   }

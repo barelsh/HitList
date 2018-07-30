@@ -3,7 +3,7 @@ import {View, ScrollView, Text, TextInput, FlatList} from 'react-native'
 import { connect } from 'react-redux'
 import Button from "react-native-elements/src/buttons/Button";
 
-// import YourActions from '../Redux/YourRedux'
+import AddListActions from "../Redux/AddListRedux";
 
 // Styles
 import styles from './Styles/AddListScreenStyle'
@@ -54,6 +54,17 @@ class AddListScreen extends Component {
     })
   }
 
+  onSubmitPressed() {
+    this.props.addNewList({
+      userId: this.props.navigation.state.params.user.id,
+      title: this.state.title,
+      members: this.state.members.map((member, index)=>{return {'name':member.name, 'id':index}}),
+    })
+
+    //TODO make this happen after transaction is set
+    this.props.navigation.goBack();
+  }
+
 
   render () {
     console.log(JSON.stringify(this.state))
@@ -85,6 +96,8 @@ class AddListScreen extends Component {
                      onSubmitEditing={this.onAddMemberPressed.bind(this)} />
           <Button title={'Add Member'} onPress={this.onAddMemberPressed.bind(this)}/>
         </View>
+
+        <Button title={'Submit new list'} onPress={this.onSubmitPressed.bind(this)}/>
       </ScrollView>
     )
   }
@@ -97,6 +110,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    addNewList: (data) => dispatch(AddListActions.addListRequest(data)),
   }
 }
 
