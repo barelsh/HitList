@@ -11,6 +11,7 @@ import { GithubTypes } from '../Redux/GithubRedux'
 import { FetchListsTypes } from '../Redux/FetchListsRedux'
 import { SelectListTypes } from '../Redux/SelectListRedux'
 import { AddTransactionTypes } from '../Redux/AddTransactionRedux'
+import { AddListTypes } from '../Redux/AddListRedux'
 
 /* ------------- Sagas ------------- */
 
@@ -19,6 +20,7 @@ import { getUserAvatar } from './GithubSagas'
 import { getFetchLists } from './FetchListsSagas'
 import { getSelectedList } from './SelectListSagas'
 import { postAddTransaction } from './AddTransactionSagas'
+import { postAddList } from './AddListSagas'
 
 /* ------------- API ------------- */
 
@@ -40,7 +42,8 @@ export default function * root () {
 
     takeLatest(FetchListsTypes.FETCH_LISTS_REQUEST, getFetchLists, api),
     takeLatest(SelectListTypes.SELECT_LIST_REQUEST, getSelectedList, api),
-    takeLatest(AddTransactionTypes.ADD_TRANSACTION_REQUEST, postAddTransaction, api)
+    takeLatest(AddTransactionTypes.ADD_TRANSACTION_REQUEST, postAddTransaction, api),
+    takeLatest(AddListTypes.ADD_LIST_REQUEST, postAddList, api),
 
   ])
 }
