@@ -10,8 +10,16 @@ import SelectListActions from '../Redux/SelectListRedux'
 import styles from './Styles/MainScreenStyle'
 
 class MainScreen extends React.PureComponent {
-  state = {
-    lists: {...FetchListsActions.INITIAL_STATE}
+
+  constructor(props){
+    super(props);
+    console.disableYellowBox = true;
+    this.state = {
+      lists: {...FetchListsActions.INITIAL_STATE},
+      user: {
+        id: 7
+      }
+    }
   }
 
   navToSelectedList(id) {
@@ -77,7 +85,7 @@ class MainScreen extends React.PureComponent {
   fetchLists() {
     this.props.fetchLists({
       user: {
-        id: 7
+        id: this.state.user.id
       }})
   }
 
