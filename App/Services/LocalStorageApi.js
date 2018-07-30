@@ -104,14 +104,36 @@ export async function fetchListTransactions(listId) {
   return data;
 }
 
+export async function postAddList(userId, listId, data) {
+  const userLists = await _retrieveData(`${userId}:Lists`);
+  if (!userLists.ok){
+    return userLists;
+  }
+
+  let store = await _storeData(`${userId}:Lists`,userLists.data.concat({id: listId, title: data.title, description: ''}))
+  if (!store.ok){
+    return store;
+  }
+
+  store = await _storeData(`Lists:${listId}:Members`, data.members)
+  if (!store.ok){
+    return store;
+  }
+
+  store = await _storeData(`Lists:${listId}:Balances`,
+    data.members.map(member => {return {'memberId':member.id, 'balance': 0}}))
+  if (!store.ok){
+    return store;
+  }
+
+  return {ok: true}
+}
+
 export async function postTransaction(transactionId, listId, {time, whoPayed,forWhom,amount,description}) {
   console.log('storing...')
   let transactions = await _retrieveData(`Lists:${listId}:Transactions`)
   if (!transactions.ok) {
-    return {
-      ok: false,
-      error: transactions.error
-    }
+    return transactions;
   }
   transactions.data.push(transactionId)
   await _storeData(`Lists:${listId}:Transactions`, transactions.data);
@@ -142,4 +164,5 @@ export default {
   fetchListTransactions,
   postTransaction,
   postBalances,
+  postAddList
 }
