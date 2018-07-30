@@ -11,6 +11,7 @@ export const reducers = combineReducers({
   fetchLists: require('./FetchListsRedux').reducer,
   selectList: require('./SelectListRedux').reducer,
   addTransaction: require('./AddTransactionRedux').reducer,
+  fetchTransactions: require('./FetchTransactionsRedux').reducer,
 })
 
 export default () => {
