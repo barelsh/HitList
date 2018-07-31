@@ -16,12 +16,12 @@ class TransactionsScreen extends React.PureComponent {
   }
 
 
-  renderRow (transaction) {
+  renderRow ({item}, self) {
     return (
       <View style={styles.row}>
-        <Text style={styles.boldLabel}>{transaction.whoPayed}</Text>
+        <Text style={styles.boldLabel}>{self.props.members[item.whoPayed]}</Text>
         <Text> Payed </Text>
-        <Text style={styles.boldLabel}>{transaction.amount}</Text>
+        <Text style={styles.boldLabel}>{item.amount}</Text>
       </View>
     )
   }
@@ -66,7 +66,7 @@ class TransactionsScreen extends React.PureComponent {
             <FlatList
               contentContainerStyle={styles.listContent}
               data={data}
-              renderItem={this.renderRow}
+              renderItem={(item)=>this.renderRow(item, this)}
               keyExtractor={this.keyExtractor}
               initialNumToRender={this.oneScreensWorth}
               ListHeaderComponent={this.renderHeader}
@@ -81,8 +81,12 @@ class TransactionsScreen extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => {
+  console.log('in TransactionScreen. state: '+ JSON.stringify(state))
+  const members = new Map();
+  state.selectList.payload.members.forEach(({id, name}) => {members[id] = name})
   return {
-    transactions: {...state.fetchTransactions}
+    transactions: {...state.fetchTransactions},
+    members: members
   }
 }
 

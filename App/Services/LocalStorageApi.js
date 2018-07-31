@@ -96,12 +96,26 @@ export async function getListBalances(listId){
   return data;
 }
 
-//TODO test
 export async function getListTransactions(listId) {
   console.log('fetching...')
-  const data = await _retrieveData(`Lists:${listId}:Transactions`);
-  console.log('fetched! ' + JSON.stringify(data))
-  return data;
+  const transactionIds = await _retrieveData(`Lists:${listId}:Transactions`);
+  if (!transactionIds.ok) {
+    return transactionIds
+  }
+
+  const details = []
+
+  await Promise.all(transactionIds.data.map(async (id) => {
+    const t = await _retrieveData(`Lists:${listId}:Transactions:${id}`);
+    if (t.ok) {
+      details.push(t.data)
+    }
+  }))
+  console.log('fetched! ' + JSON.stringify(details))
+  return {
+    ok: true,
+    data: details
+  }
 }
 
 export async function postAddList(userId, listId, data) {
