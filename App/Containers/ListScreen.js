@@ -58,28 +58,28 @@ class ListScreen extends Component {
       <ScrollView style={styles.container}>
         <KeyboardAvoidingView behavior='position'>
           <Text>List Id {listId}</Text>
-        </KeyboardAvoidingView>
-        {isErrorFetching ?
-          <Text> Error when trying to fetch list details :( </Text>
-          :
-          isFetching ?
-            <Text> Fetching List Details... </Text>
+          {isErrorFetching ?
+            <Text> Error when trying to fetch list details :( </Text>
             :
-            <FlatList
-              contentContainerStyle={styles.listContent}
-              data={data}
-              renderItem={this.renderRow}
-              keyExtractor={this.keyExtractor}
-              initialNumToRender={this.oneScreensWorth}
-              // ListHeaderComponent={this.renderHeader}
-              // ListFooterComponent={this.renderFooter}
-              ListEmptyComponent={this.renderEmpty}
-              ItemSeparatorComponent={this.renderSeparator}
-            />
-        }
-        <Button title={'add transaction'} onPress={this.navToAddTransaction.bind(this)}/>
-        <View/>
-        <Button title={'view transactions'} onPress={this.navToTransactions.bind(this)}/>
+            isFetching ?
+              <Text> Fetching List Details... </Text>
+              :
+              <FlatList
+                contentContainerStyle={styles.listContent}
+                data={data}
+                renderItem={this.renderRow}
+                keyExtractor={this.keyExtractor}
+                initialNumToRender={this.oneScreensWorth}
+                // ListHeaderComponent={this.renderHeader}
+                // ListFooterComponent={this.renderFooter}
+                ListEmptyComponent={this.renderEmpty}
+                ItemSeparatorComponent={this.renderSeparator}
+              />
+          }
+          <Button title={'add transaction'} onPress={this.navToAddTransaction.bind(this)}/>
+          <View height={10}/>
+          <Button title={'view transactions'} onPress={this.navToTransactions.bind(this)}/>
+        </KeyboardAvoidingView>
       </ScrollView>
     )
   }
